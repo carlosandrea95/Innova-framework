@@ -2,7 +2,7 @@
 /**
  *
  */
-class sys_usuariosModel extends CModel
+class usuariosModel extends CModel
 {
 
   function __construct()

@@ -8,7 +8,8 @@ class CModel
     {
         $this->db = new CDatabase();
         $child = get_called_class();
-        $this->table = str_replace('Model','',$child);    
+        $this->table = str_replace('Model','',$child);
+        $this->table = 'sys_'.$this->table;
     }
     public function create($arr)
     {
@@ -38,16 +39,57 @@ class CModel
             $this->db->query($sql);
         }
     }
+    public function filds($arr)
+    {
+        if (is_array($arr)) {
+            $filds=implode(",",$arr);
+            $this->_filds=$filds;        
+        }
+    }
+    public function where($conds=null)
+    {
+        if (is_array($conds)) {
+            foreach ($conds as $f => $v) {
+                $cond[]=$f."='".$v."'";
+            }
+            $condi=implode(" AND ",$cond);
+            $this->_where=$condi;
+        }
+    }
+    public function delete($id)
+    {
+        $sql="DELETE FROM ".$this->table." WHERE 1='".$id."'";
+        $this->db->query($sql);
+    }
     public function find($id)
     {
-        if(!empty($this->_filds)){
+        if($this->_filds){
             $sql="SELECT ".$this->_filds." FROM ".$this->table." WHERE 1='".$id."'";
         }else{
             $sql="SELECT * FROM ".$this->table." WHERE 1='".$id."'";
         }
-        $this->_sql = $this->db->query("SELECT FROM ");
-        $this->_sql = $this->_sql->fetch(PDO::FETCH_ASSOC);
-        return $this->_sql;
+        $this->_sql = $this->db->query($sql);
+        $rtn  = $this->_sql->fetch(PDO::FETCH_ASSOC);
+        return $rtn;
+    }
+    public function all()
+    {
+        if($this->_where){
+            if($this->_filds){
+                $sql="SELECT ".$this->_filds." FROM ".$this->table." WHERE ".$this->_where;
+            }else{
+                $sql="SELECT * FROM ".$this->table ." WHERE ".$this->_where;
+            }
+        }else{
+            if ($this->_filds){
+                $sql="SELECT ".$this->_filds." FROM ".$this->table;
+            }else{
+                $sql="SELECT * FROM ".$this->table;
+            }
+        }
+        $this->_sql = $this->db->query($sql);
+        $rtn  = $this->_sql->fetchAll(PDO::FETCH_ASSOC);
+        return $rtn;
     }
     // protected function query($value)
     // {

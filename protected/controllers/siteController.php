@@ -14,18 +14,12 @@ class siteController extends CController
     }
     public function index()
     {
-        $m=$this->loadModel('sys_usuarios');
-        // $m->update(
-        //     array(
-        //         'nombre'=>'jhorvis',
-        //         'apellido'=>'sanchez'
-        //     ),
-        //     array(
-        //         'id'=>'787'
-        //     )
-        // );
-        echo $m->find(1);
-        
+        $m=$this->loadModel('usuarios');
+        $m->filds(
+            array(
+                'id_usuario','nombres'
+            )
+        );        
         $this->render('index', array(
             'title' => AppName . ' - Inicio',
             'pageActive',
