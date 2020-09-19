@@ -37,6 +37,7 @@ class CController
             $this->layout = DEFAULT_LAYOUT;
         }
         $templateParams = array(
+            'baseUrl'=>CUrl::baseUrl().'framework/',
             'cssDir' => $this->CssDir,
             'imgDir' => CUrl::baseUrl() . 'framework/assets/',
             'jsDir' => $this->JsDir,
