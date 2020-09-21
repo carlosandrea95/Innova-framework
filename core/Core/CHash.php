@@ -3,45 +3,33 @@
 class CHash
 {
 
-    public function Hash($data)
+    public static function make($data)
     {
-        $hash = self::hashGostCrypto(self::hashGost(self::hashSnefru(self::hashSha512(self::hashSha1(self::hashMd5(($data)))))));
-        return $hash;
-    }
-    private function hashMd5($data)
-    {
-        $hash = hash_init('md5', HASH_HMAC, '594f1fb93097a');
-        hash_update($hash, $data);
-        return hash_final($hash);
-    }
-    private function hashSha1($data)
-    {
-        $hash = hash_init('sha1', HASH_HMAC, '594f1fb93097a');
-        hash_update($hash, $data);
-        return hash_final($hash);
-    }
-    private function hashSnefru($data)
-    {
-        $hash = hash_init('snefru', HASH_HMAC, '594f1fb93097a');
-        hash_update($hash, $data);
-        return hash_final($hash);
-    }
-    private function hashSha512($data)
-    {
-        $hash = hash_init('sha1', HASH_HMAC, '594f1fb93097a');
-        hash_update($hash, $data);
-        return hash_final($hash);
-    }
-    private function hashGost($data)
-    {
-        $hash = hash_init('gost', HASH_HMAC, '594f1fb93097a');
-        hash_update($hash, $data);
-        return hash_final($hash);
-    }
-    private function hashGostCrypto($data)
-    {
-        $hash = hash_init('gost-crypto', HASH_HMAC, '594f1fb93097a');
-        hash_update($hash, $data);
-        return hash_final($hash);
+        // Hash Level 1
+        $level_one = hash_init('sha512', HASH_HMAC, '594f1fb93097a');
+        hash_update($level_one, $data);
+        $level_one = hash_final($level_one);
+        // Hash Level 2
+        $level_two=hash_init('ripemd320', HASH_HMAC, '594f1fb93097a');
+        hash_update($level_two, $level_one);
+        $level_two = hash_final($level_two);
+        // Hash Level 3
+        $level_three=hash_init('sha3-512', HASH_HMAC, '594f1fb93097a');
+        hash_update($level_three, $level_two);
+        $level_three = hash_final($level_three);
+        // Hash Level 4
+        $level_four=hash_init('sha3-384', HASH_HMAC, '594f1fb93097a');
+        hash_update($level_four, $level_three);
+        $level_four = hash_final($level_four);
+        // Hash Level 5
+        $level_five=hash_init('sha384', HASH_HMAC, '594f1fb93097a');
+        hash_update($level_five, $level_four);
+        $level_five = hash_final($level_five);
+        // Hash Level 6
+        $level_final=hash_init('whirlpool', HASH_HMAC, '594f1fb93097a');
+        hash_update($level_final, $level_five);
+        $level_final = hash_final($level_final);
+        // return hash
+        return $level_final;
     }
 }

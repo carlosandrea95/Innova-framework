@@ -6,7 +6,7 @@ return array(
         'Company' => 'Vensoftic',
         'Version' => '1.0.0.5',
         'Url' => 'www.vensoftic.com',
-
+        'baseDir'=>'framework'
     ),
     'defaultConfig' => array(
         'defaultController' => 'site',

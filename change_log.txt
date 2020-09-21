@@ -1,0 +1,6 @@
+CHANGES[20-09-2020]
+-->[IMPORTANTE]:Actualizacion de la clase de CHash, se compacto el hash principal en una sola funcion estatica "Hash::make()"
+-->Se añadio la constante de BASEDIR en el archivo CConfig la cual tiene como funcion establezer el directorio padre para la funcion "CUrl::baseUrl", el nombre del directorio se puede modificar desde el archivo ubicado en protected/config/main.php apartado de application dentro del array
+-->Se añadio la  constante de DB_PREFIX la cual indica el prefijo de las tablas en la base de datos para la construccion del CModel.php
+-->Se modifico el CController para corrigir las llamadas de "CUrl::baseUrl"
+-->Se añadireon ejemplos sobre el manejo de el "methodPost()" y el "methodGet()" tanto en el controllador de usuarios como la vista inde.tpl

@@ -13,7 +13,12 @@ class CUrl
             $protocolo = 'http';
         }
         $server_name = $_SERVER['SERVER_NAME'];
-        return $protocolo . '://' . $server_name . '/';
+        if (!empty(BASEDIR)) {
+            return $protocolo . '://' . $server_name . '/'.BASEDIR.'/';
+        }else{
+            return $protocolo . '://' . $server_name . '/';
+        }
+
     }
     public static function sudoUrl($subdomain)
     {

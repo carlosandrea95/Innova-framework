@@ -19,7 +19,7 @@ class CController
         } else {
             $this->_rutas['view'] = WebRoot . 'protected' . DS . 'views' . DS . $this->_controlador . DS;
         }
-    }
+    }   
     protected function render($vista, $dataTransfer = null)
     {
 
@@ -37,9 +37,9 @@ class CController
             $this->layout = DEFAULT_LAYOUT;
         }
         $templateParams = array(
-            'baseUrl'=>CUrl::baseUrl().'framework/',
+            'baseUrl'=>CUrl::baseUrl(),
             'cssDir' => $this->CssDir,
-            'imgDir' => CUrl::baseUrl() . 'framework/assets/',
+            'imgDir' => CUrl::baseUrl() . 'assets/',
             'jsDir' => $this->JsDir,
             'app' => array(
                 'app_name' => AppName,

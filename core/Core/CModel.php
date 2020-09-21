@@ -9,7 +9,8 @@ class CModel
         $this->db = new CDatabase();
         $child = get_called_class();
         $this->table = str_replace('Model','',$child);
-        $this->table = 'sys_'.$this->table;
+        $this->table= DB_PREFIX. $this->table;
+        // $this->table = 'sys_'.$this->table;
     }
     public function create($arr)
     {

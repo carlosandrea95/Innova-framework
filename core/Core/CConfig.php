@@ -21,6 +21,7 @@ define('AppName', $configs["main"]['application']['Name']);
 define('AppSlogan', $configs["main"]['application']['Slogan']);
 define('AppCompany', $configs["main"]['application']['Company']);
 define('AppVersion', $configs["main"]['application']['Version']);
+define('BASEDIR', $configs["main"]['application']['baseDir']);
 // -------- DEFAULT CONFIG
 define('DEFAULT_CONTROLLER', $configs["main"]['defaultConfig']['defaultController']);
 define('DEFAULT_METHOD', $configs["main"]['defaultConfig']['defaultMethod']);
@@ -31,6 +32,8 @@ define('DB_USER', $configs['db']['username']);
 define('DB_PASS', $configs['db']['password']);
 define('DB_NAME', $configs['db']['database']);
 define('DB_CSET', $configs['db']['charset']);
+
+define('DB_PREFIX', 'sys_');
 
 // -------- MODULOS
 define('APP_MODULOS',$configs["main"]['modules']);

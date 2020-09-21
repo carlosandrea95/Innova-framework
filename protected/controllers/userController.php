@@ -15,8 +15,35 @@ class userController extends CController
         ),);
         $usuarios=$m->all();
 
+        // if ($this->methodPost('text')){
+        //     $text=$this->methodPost('text');
+        //       $this->render('index',array(
+        //         'usuarios'=>$usuarios,
+        //         'message'=>$text,
+        //     ));
+        // }else {
+        //     $this->render('index',array(
+        //         'usuarios'=>$usuarios,
+        //     ));
+        // }
         $this->render('index',array(
-            'usuarios'=>$usuarios
-        ));
+                     'usuarios'=>$usuarios,
+                ));
+        
+    }
+    public function postDesdeOtraUrl()
+    {
+        if ($this->methodPost('text')){
+            $text=$this->methodPost('text');
+              $this->render('index',array(
+                'message'=>$text,
+            ));
+        }
+    }
+    public function usandoGet($id)
+    {
+       if ($this->methodGet($id)==1){
+        echo "hola desde el GET";
+       }
     }
 }
