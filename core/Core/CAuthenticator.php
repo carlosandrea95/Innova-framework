@@ -1,23 +1,28 @@
 <?php
 class CAuthenticator
 {
-  private $_db,$_id,$_rol,$_permisos;
+  private $_db,$_id,$_smarty,$_rol,$_permisos;
   public function __construct($id=false)
   {
-    if ($id) {
-      $this->_id = (int) $id;
-    }else {
-      if (CSession::get('id_usuario')) {
-        $this->_id=CSession::get('id_usuario');
-      }
-      else {
-        $this->_id=0;
-      }
-    }
+    $this->_smarty=new Smarty();
     $this->_db = new CDatabase();
-    $this->_rol = $this->getRol();
-    $this->_permisos = $this->getPermisosRoles();
-    $this->CompilarAcl();
+      if (CToken::verify()){
+        if ($id) {
+          $this->_id = (int) $id;
+        }else {
+          if (CSession::get('_USERID_')) {
+            $this->_id=CSession::get('_USERID_');
+          }
+          else {
+            $this->_id=0;
+          }
+        }
+        $this->_rol = $this->getRol();
+        $this->_permisos = $this->getPermisosRoles();
+        $this->CompilarAcl();
+      }else{
+        CToken::Generate();
+      }
   }
   public function CompilarAcl()
   {
@@ -30,7 +35,7 @@ class CAuthenticator
   {
     $rol=$this->_db->query("SELECT id_rol FROM sys_usuarios WHERE id_usuario='".$this->_id."'");
     $rol=$rol->fetch();
-    echo $rol['id_rol']; exit;
+    $rol['id_rol']; 
     return $rol['id_rol'];
   }
   public function getPermisosRolesId()

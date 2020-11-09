@@ -1,17 +1,17 @@
 <?php
 return array(
     'application' => array(
-        'Name' => 'Impulsando tu Web',
+        'Name' => 'Innova ERP',
         'Slogan' => '',
         'Company' => 'Vensoftic',
         'Version' => '1.0.0.5',
         'Url' => 'www.vensoftic.com',
-        'baseDir'=>'framework'
+        'baseDir'=>'app'
     ),
     'defaultConfig' => array(
-        'defaultController' => 'site',
+        'defaultController' => 'login',
         'defaultMethod' => 'index',
-        'defaultLayout' => 'site',
+        'defaultLayout' => 'dashboard',
     ),
     'database' => array(
         'mysql' => array(

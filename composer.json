@@ -1,0 +1,13 @@
+{
+    "name": "harcanox58/innova-framework",
+    "description": "Framework MVC-PHP",
+    "type": "project",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "harcanox58",
+            "email": "cjoseare1995@gmail.com"
+        }
+    ],
+    "require": {}
+}

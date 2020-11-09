@@ -1,0 +1,9 @@
+div.fixed-button.active{
+    display: none !important;
+}
+.drp-user{
+    font-size: 1.4em;
+}
+a.dropdown-toggle.has-ripple > i.icon-bell{
+    font-size: 1.4em;
+}

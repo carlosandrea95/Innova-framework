@@ -8,8 +8,8 @@ class CController
     public function __construct()
     {
         $this->_peticion = new CRequest();
-        $this->_Smarty = new Smarty();
-        // $this->_Authenticator = new CAuthenticator();
+        $this->_Smarty = CSmarty::instance();
+        $this->_Authenticator = new CAuthenticator();
 
         $this->_controlador = $this->_peticion->getControlador();
         $this->_modulo = $this->_peticion->getModulo();
@@ -36,26 +36,60 @@ class CController
         if (!$this->layout) {
             $this->layout = DEFAULT_LAYOUT;
         }
-        $templateParams = array(
+        $template = array(
             'baseUrl'=>CUrl::baseUrl(),
-            'cssDir' => $this->CssDir,
-            'imgDir' => CUrl::baseUrl() . 'assets/',
-            'jsDir' => $this->JsDir,
-            'app' => array(
-                'app_name' => AppName,
-                'app_company' => AppCompany,
-            ),
+            'assetsDir' => CUrl::baseUrl() . 'assets/',      
+            'app'=>array(
+               'name'=>_APPNAME_,
+               'js'=>self::appJs()
+            )      
         );
 
         $rutaLayout = WebRoot . 'protected' . DS . 'views' . DS . 'layouts' . DS . $this->layout . '.tpl';
-        $this->_Smarty->assign('content', $this->_rutas['view'] . $vista . '.tpl');
-        $this->_Smarty->assign('templateParams', $templateParams);
+        $this->_Smarty->assign('pageContent', $this->_rutas['view'] . $vista . '.tpl');
+        $this->_Smarty->assign('template', $template);
         if (is_readable($rutaLayout)) {
             $this->_Smarty->display($rutaLayout);
         } else {
             throw new Exception('VISTA NO ENCONTRADA');
         }
 
+    }
+    public static function appJs()
+    {
+        $dir=WebRoot.'core'.DS.'js';  
+        $names=array(); 
+        if (is_dir($dir)) { //Comprovamos que sea un directorio Valido
+            if ($dir = opendir($dir)) {//Abrimos el directorio
+
+
+                while (($archivo = readdir($dir)) !== false){ //Comenzamos a leer archivo por archivo
+
+                    if ($archivo != '.' && $archivo != '..'){//Omitimos los archivos del sistema . y ..
+
+                        $nuevaRuta = $dir.$archivo.'/';//Creamos unaruta con la ruta anterior y el nombre del archivo actual 
+
+
+                            if (is_dir($nuevaRuta)) { //Si la ruta que creamos es un directorio entonces:
+                                // echo '<b>'.$nuevaRuta.'</b>'; //Imprimimos la ruta completa resaltandola en negrita
+                                  self::appJs($nuevaRuta);//Volvemos a llamar a este metodo para que explore ese directorio.
+
+                            } else { //si no es un directorio:
+                                $names[]=CUrl::baseUrl().'core/js/'.$archivo; //simplemente imprimimos el nombre del archivo actual
+                            }
+
+
+                    }
+
+                }//finaliza While
+
+                closedir($dir);//Se cierra el archivo
+            }
+        }else{//Finaliza el If de la linea 12, si no es un directorio valido, muestra el siguiente mensaje
+            echo 'No Existe el directorio';
+        }
+        return $names;			     
+        // return CScanDir::scan($dir,'js');
     }
     protected function setCssDir($file, $dir)
     {

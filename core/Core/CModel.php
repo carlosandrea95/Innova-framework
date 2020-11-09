@@ -9,20 +9,33 @@ class CModel
         $this->db = new CDatabase();
         $child = get_called_class();
         $this->table = str_replace('Model','',$child);
-        $this->table= DB_PREFIX. $this->table;
+        $this->table= _DB_PREFIX_. $this->table;
         // $this->table = 'sys_'.$this->table;
+    }
+    protected function tableName($name)
+    {
+        $this->table= _DB_PREFIX_.$name;
     }
     public function create($arr)
     {
         if (is_array($arr)) {
             foreach ($arr as $f => $v) {
-                $fild[]=$f;
-                $val[]=$v;
+                $filds[]=$f;
+                $keys[]=':'.$f;
+                $values[]=$v;
             }        
-            $filds=implode('`,`',$fild);
-            $vals=implode("','",$val);
-            $sql='INSERT INTO '.$this->table." (`".$filds."`) VALUES ('".$vals."')";
-            $this->db->query($sql);
+            $fild=implode('`,`',$filds);
+            $key=implode(",",$keys);
+            $sql='INSERT INTO '.$this->table." (`".$fild."`) VALUES (".$key.")";
+            $stmt= $this->db->prepare($sql);
+            for ($k=0; $k < count($keys); $k++) { 
+                for ($x=0; $x < count($values); $x++) { 
+                    if ($k==$x)
+                    // echo $keys[$k].'=>'.$values[$x];
+                    $stmt->bindParam($keys[$k],$values[$x]);  
+                }
+            }
+            $stmt->execute();
         }
     }
     public function update($vars, $conds=null)
@@ -59,18 +72,22 @@ class CModel
     }
     public function delete($id)
     {
-        $sql="DELETE FROM ".$this->table." WHERE 1='".$id."'";
-        $this->db->query($sql);
+        $sql="DELETE FROM ".$this->table." WHERE 1=?";
+        $stmt=$this->db->prepare($sql);
+        $stmt->bindParam(1,$id);
+        $stmt->execute();
     }
     public function find($id)
     {
         if($this->_filds){
-            $sql="SELECT ".$this->_filds." FROM ".$this->table." WHERE 1='".$id."'";
+            $sql="SELECT ".$this->_filds." FROM ".$this->table." WHERE 1=?";
         }else{
-            $sql="SELECT * FROM ".$this->table." WHERE 1='".$id."'";
+            $sql="SELECT * FROM ".$this->table." WHERE 1=?";
         }
-        $this->_sql = $this->db->query($sql);
-        $rtn  = $this->_sql->fetch(PDO::FETCH_ASSOC);
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(1,$id);
+        $stmt->execute();
+        $rtn  = $stmt->fetch(PDO::FETCH_ASSOC);
         return $rtn;
     }
     public function all()
@@ -88,34 +105,9 @@ class CModel
                 $sql="SELECT * FROM ".$this->table;
             }
         }
-        $this->_sql = $this->db->query($sql);
-        $rtn  = $this->_sql->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $rtn  = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $rtn;
     }
-    // protected function query($value)
-    // {
-    //     $this->_sql = $this->db->query($value);
-    // }
-    // protected function prepare($value)
-    // {
-    //     $this->_sql = $this->db->prepare($value);
-    // }
-    // protected function bindParam($key, $value)
-    // {
-    //     $this->_sql->bindParam($key, $value);
-    // }
-    // protected function execute()
-    // {
-    //     $this->_sql->execute();
-    // }
-    // protected function fetchAssoc($type = '')
-    // {
-    //     $this->_sql = $this->_sql->fetch(PDO::FETCH_ASSOC);
-    //     return $this->_sql;
-    // }
-    // protected function fetchAllAssoc($type = '')
-    // {
-    //     $this->_sql = $this->_sql->fetchAll(PDO::FETCH_ASSOC);
-    //     return $this->_sql;
-    // }
 }

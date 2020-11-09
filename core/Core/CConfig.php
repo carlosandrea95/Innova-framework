@@ -1,23 +1,11 @@
 <?php
+define('_DEBUG_', true);
+define('_MAINTENANCE_',false);
+
 $configs['main'] = require_once WebRoot.'protected'.DS.'config'.DS.'main.php';
 $configs['db'] = require_once WebRoot.'protected'.DS.'config'.DS.'db.php';
-// -------- baseUrl
-// if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
-//   $protocolo='https';
-// }else {
-//   $protocolo='http';
-// }
-// $server_name=$_SERVER['SERVER_NAME'];
-// $path=$configs['defaultConfig']['path'];
-// $usePath=$configs['defaultConfig']['usePath'];
-// if($usePath==true){
-//     define('baseUrl', $protocolo.'://'.$server_name.'/'.$path.'/');
-// }else{
-//     define('baseUrl', $protocolo.'://'.$server_name.'/');
-// }
-
 // -------- Application
-define('AppName', $configs["main"]['application']['Name']);
+define('_APPNAME_', $configs["main"]['application']['Name']);
 define('AppSlogan', $configs["main"]['application']['Slogan']);
 define('AppCompany', $configs["main"]['application']['Company']);
 define('AppVersion', $configs["main"]['application']['Version']);
@@ -33,7 +21,7 @@ define('DB_PASS', $configs['db']['password']);
 define('DB_NAME', $configs['db']['database']);
 define('DB_CSET', $configs['db']['charset']);
 
-define('DB_PREFIX', 'sys_');
+define('_DB_PREFIX_', 'sys_');
 
 // -------- MODULOS
 define('APP_MODULOS',$configs["main"]['modules']);
@@ -110,4 +98,9 @@ function limitar_palabras($string, $length = 50, $ellipsis = "...")
     {
             return $string;
     }
+}
+if (_DEBUG_===true){
+  require_once 'CErrorHandler.php';  
+}else{
+  error_reporting('E_ALL');
 }
