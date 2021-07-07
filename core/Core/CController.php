@@ -38,7 +38,7 @@ class CController
         }
         $templateParams = array(
             'cssDir' => $this->CssDir,
-            'imgDir' => CUrl::baseUrl() . 'framework/assets/',
+            'imgDir' => CUrl::baseUrl() . 'innova-framework/assets/',
             'jsDir' => $this->JsDir,
             'app' => array(
                 'app_name' => AppName,
@@ -54,7 +54,6 @@ class CController
         } else {
             throw new Exception('VISTA NO ENCONTRADA');
         }
-
     }
     protected function setCssDir($file, $dir)
     {

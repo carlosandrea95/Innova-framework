@@ -16,9 +16,9 @@ return array(
     'database' => array(
         'mysql' => array(
             'hostname' => 'localhost',
-            'username' => 'DevRoot', //'vensofti_root',
-            'password' => 'Nathan', //'yuanst6wu2or',
-            'database' => 'test',
+            'username' => 'root', //'vensofti_root',
+            'password' => '', //'yuanst6wu2or',
+            'database' => 'innova',
             'charset' => 'utf8',
         ),
     ),
